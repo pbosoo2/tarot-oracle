@@ -1,0 +1,31 @@
+name: Save Tarot Reading to Notion
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: tarot-save-${{ github.event.issue.number }}
+  cancel-in-progress: false
+jobs:
+  save:
+    if: github.actor == github.repository_owner && startsWith(github.event.issue.title, '[타로 저장]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Save reading to Notion
+        run: node scripts/save-reading.mjs
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+      - name: Remove reading text and close issue
+        run: |
+          gh issue edit "$ISSUE_NUMBER" --body "Notion 타로카드_new에 저장 완료했습니다. 원문은 자동으로 삭제되었습니다."
+          gh issue close "$ISSUE_NUMBER" --comment "저장 완료"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
