@@ -1,23 +1,17 @@
-# 별빛 타로 리딩 — 한 저장소 구성
+# 별빛 타로 리딩
 
-이 저장소 하나에서 GitHub Pages 배포와 Notion 저장 Action을 함께 실행합니다.
+GitHub Pages에서 실행되는 정적 타로 리딩 페이지입니다.
 
-## 처음 한 번 설정
-1. 이 폴더의 내용물을 `pbosoo2/tarot-oracle` 저장소 루트에 업로드합니다.
-2. 저장소 **Settings → General → Features**에서 **Issues**를 켭니다.
-3. **Settings → Secrets and variables → Actions → New repository secret**을 선택합니다.
-4. 이름 `NOTION_TOKEN`으로 Notion 개인 액세스 토큰을 저장합니다.
-5. 토큰에 Notion API 쓰기 권한이 있고 `타로카드_new` 데이터베이스에 접근할 수 있어야 합니다.
-6. **Settings → Pages → Build and deployment → Source**에서 **GitHub Actions**를 선택합니다.
+## 주요 기능
+- 78장 풀덱
+- 화면에서 직접 뽑기 또는 실물 카드 입력
+- 스프레드별 카드 수 제한
+- 정방향·역방향 해석
+- 질문·카드·배열에 따른 상세 해석과 현실적인 조언
+- 카드와 순서, 카드별 의미, 해석, 최종 조언, 전체 리딩 원클릭 복사
 
-## 저장 흐름
-리딩 완료 → GitHub에서 저장 확인 → Submit new issue → Action이 Notion 저장 → Issue 본문 삭제 → Issue 닫기.
+## 배포
+`master` 브랜치에 변경사항을 push하면 `.github/workflows/deploy-pages.yml`이 GitHub Pages를 자동 배포합니다.
 
-## 공개 저장소 주의
-Issue는 Action이 처리하기 전 잠깐 공개될 수 있습니다. Action은 저장소 소유자가 만든 `[타로 저장]` Issue만 처리하며, 저장 후 본문을 자동으로 지웁니다.
-
-## 파일
-- `index.html`: 타로 페이지
-- `.github/workflows/deploy-pages.yml`: Pages 자동 배포
-- `.github/workflows/save-tarot-to-notion.yml`: Issue를 Notion에 저장
-- `scripts/save-reading.mjs`: Notion API 저장 스크립트
+## 보안
+Notion API, GitHub PAT, Webhook, Issue 저장 기능을 사용하지 않습니다. 모든 리딩은 브라우저 안에서 생성되며 사용자가 복사 버튼을 누를 때만 클립보드에 복사됩니다.
